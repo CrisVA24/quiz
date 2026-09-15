@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <main>
+        <!-- Pantalla de inicio -->
+        <section id="start-screen">
+            <h1>Quiz</h1>
+
+            <p>Selecciona una opción para comenzar.</p>
+
+            <button id="start-quiz-button" type="button">
+                Iniciar trivia
+            </button>
+
+            <button id="edit-questions-button" type="button">
+                Editar preguntas
+            </button>
+        </section>
+
+        <!-- Pantalla de trivia -->
+        <section id="trivia-screen">
+            <h2>Trivia</h2>
+
+            <div id="trivia-content"></div>
+
+            <button id="trivia-home-button" type="button">
+                Volver al inicio
+            </button>
+        </section>
+
+        <!-- Pantalla de edición -->
+        <section id="edit-screen">
+            <h2>Editar preguntas</h2>
+
+            <div id="edit-content"></div>
+
+            <button id="add-question-button" type="button">
+                Agregar pregunta
+            </button>
+
+            <button id="save-questions-button" type="button">
+                Guardar cambios
+            </button>
+
+            <button id="edit-home-button" type="button">
+                Volver al inicio
+            </button>
+        </section>
+    </main>
+</body>
+</html>
