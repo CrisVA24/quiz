@@ -30,3 +30,46 @@ let questions = [
         correctAnswer: 2
     }
 ];
+
+let currentScreen = "start";
+
+const startScreen = document.getElementById("start-screen");
+const triviaScreen = document.getElementById("trivia-screen");
+const editScreen = document.getElementById("edit-screen");
+
+const startQuizButton = document.getElementById("start-quiz-button");
+const editQuestionsButton = document.getElementById("edit-questions-button");
+const triviaHomeButton = document.getElementById("trivia-home-button");
+const editHomeButton = document.getElementById("edit-home-button");
+
+function showScreen(screen) {
+    startScreen.classList.add("hidden");
+    triviaScreen.classList.add("hidden");
+    editScreen.classList.add("hidden");
+
+    screen.classList.remove("hidden");
+
+    if (screen === startScreen) {
+        currentScreen = "start";
+    } else if (screen === triviaScreen) {
+        currentScreen = "trivia";
+    } else if (screen === editScreen) {
+        currentScreen = "edit";
+    }
+}
+
+startQuizButton.addEventListener("click", function () {
+    showScreen(triviaScreen);
+});
+
+editQuestionsButton.addEventListener("click", function () {
+    showScreen(editScreen);
+});
+
+triviaHomeButton.addEventListener("click", function () {
+    showScreen(startScreen);
+});
+
+editHomeButton.addEventListener("click", function () {
+    showScreen(startScreen);
+});
