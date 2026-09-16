@@ -111,6 +111,70 @@ function renderResults() {
     );
 }
 
+function renderEditor() {
+    const editContent = document.getElementById("edit-content");
+
+    editContent.replaceChildren();
+
+    questions.forEach(function (question, questionIndex) {
+        const questionContainer = document.createElement("fieldset");
+
+        const legend = document.createElement("legend");
+        legend.textContent = `Pregunta ${questionIndex + 1}`;
+
+        const questionLabel = document.createElement("label");
+        questionLabel.textContent = "Enunciado";
+        questionLabel.htmlFor = `question-${questionIndex}`;
+
+        const questionInput = document.createElement("input");
+        questionInput.type = "text";
+        questionInput.id = `question-${questionIndex}`;
+        questionInput.value = question.question;
+        questionInput.dataset.questionIndex = questionIndex;
+
+        questionContainer.appendChild(legend);
+        questionContainer.appendChild(questionLabel);
+        questionContainer.appendChild(questionInput);
+
+        question.options.forEach(function (option, optionIndex) {
+            const optionContainer = document.createElement("div");
+
+            const optionLabel = document.createElement("label");
+            optionLabel.textContent = `Opción ${optionIndex + 1}`;
+            optionLabel.htmlFor =
+                `question-${questionIndex}-option-${optionIndex}`;
+
+            const optionInput = document.createElement("input");
+            optionInput.type = "text";
+            optionInput.id =
+                `question-${questionIndex}-option-${optionIndex}`;
+            optionInput.value = option;
+            optionInput.dataset.questionIndex = questionIndex;
+            optionInput.dataset.optionIndex = optionIndex;
+
+            const correctLabel = document.createElement("label");
+
+            const correctRadio = document.createElement("input");
+            correctRadio.type = "radio";
+            correctRadio.name = `correct-answer-${questionIndex}`;
+            correctRadio.value = optionIndex;
+            correctRadio.checked =
+                optionIndex === question.correctAnswer;
+
+            correctLabel.appendChild(correctRadio);
+            correctLabel.append(" Respuesta correcta");
+
+            optionContainer.appendChild(optionLabel);
+            optionContainer.appendChild(optionInput);
+            optionContainer.appendChild(correctLabel);
+
+            questionContainer.appendChild(optionContainer);
+        });
+
+        editContent.appendChild(questionContainer);
+    });
+}
+
 function handleAnswer(selectedOptionIndex, optionsContainer) {
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -201,6 +265,7 @@ startQuizButton.addEventListener("click", function () {
 
 editQuestionsButton.addEventListener("click", function () {
     showScreen(editScreen);
+    renderEditor();
 });
 
 triviaHomeButton.addEventListener("click", function () {
