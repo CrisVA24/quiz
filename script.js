@@ -33,6 +33,8 @@ let questions = [
 
 let currentScreen = "start";
 let currentQuestionIndex = 0;
+let userAnswers = [];
+let score = 0;
 
 const startScreen = document.getElementById("start-screen");
 const triviaScreen = document.getElementById("trivia-screen");
@@ -45,6 +47,10 @@ const editHomeButton = document.getElementById("edit-home-button");
 
 function renderQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
+
+    const progress = document.createElement("p");
+    
+    progress.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
 
     const questionTitle = document.createElement("h3");
     questionTitle.textContent = currentQuestion.question;
@@ -70,6 +76,7 @@ function renderQuestion() {
     const triviaContent = document.getElementById("trivia-content");
 
     triviaContent.replaceChildren(
+        progress,
         questionTitle,
         optionsContainer
     );
@@ -77,6 +84,18 @@ function renderQuestion() {
 
 function handleAnswer(selectedOptionIndex, optionsContainer) {
     const currentQuestion = questions[currentQuestionIndex];
+
+    const isCorrect = selectedOptionIndex === currentQuestion.correctAnswer;
+
+    userAnswers.push({
+        questionIndex: currentQuestionIndex,
+        selectedOptionIndex: selectedOptionIndex,
+        isCorrect: isCorrect
+    });
+
+    if (isCorrect) {
+        score++;
+    }
 
     const optionButtons = optionsContainer.querySelectorAll("button");
 
@@ -86,12 +105,14 @@ function handleAnswer(selectedOptionIndex, optionsContainer) {
 
     const feedback = document.createElement("p");
 
-    if (selectedOptionIndex === currentQuestion.correctAnswer) {
+    if (isCorrect) {
         feedback.textContent = "¡Correcto!";
     } else {
-        const correctOption = currentQuestion.options[currentQuestion.correctAnswer];
+        const correctOption =
+            currentQuestion.options[currentQuestion.correctAnswer];
 
-        feedback.textContent = `Incorrecto. La respuesta correcta es: ${correctOption}`;
+        feedback.textContent =
+            `Incorrecto. La respuesta correcta es: ${correctOption}`;
     }
 
     const triviaContent = document.getElementById("trivia-content");
@@ -137,6 +158,8 @@ function showScreen(screen) {
 
 startQuizButton.addEventListener("click", function () {
     currentQuestionIndex = 0;
+    userAnswers = [];
+    score = 0;
 
     showScreen(triviaScreen);
     renderQuestion();
