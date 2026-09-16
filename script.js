@@ -82,6 +82,35 @@ function renderQuestion() {
     );
 }
 
+function renderResults() {
+    const resultsTitle = document.createElement("h3");
+    resultsTitle.textContent = "Resultado final";
+
+    const scoreText = document.createElement("p");
+    scoreText.textContent =
+        `Obtuviste ${score} de ${questions.length} respuestas correctas.`;
+
+    const restartButton = document.createElement("button");
+    restartButton.type = "button";
+    restartButton.textContent = "Volver a intentar";
+
+    restartButton.addEventListener("click", function () {
+        currentQuestionIndex = 0;
+        userAnswers = [];
+        score = 0;
+
+        renderQuestion();
+    });
+
+    const triviaContent = document.getElementById("trivia-content");
+
+    triviaContent.replaceChildren(
+        resultsTitle,
+        scoreText,
+        restartButton
+    );
+}
+
 function handleAnswer(selectedOptionIndex, optionsContainer) {
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -132,11 +161,16 @@ function handleAnswer(selectedOptionIndex, optionsContainer) {
 
         triviaContent.appendChild(nextButton);
     } else {
-        const completedMessage = document.createElement("p");
+        const resultsButton = document.createElement("button");
 
-        completedMessage.textContent = "Has completado todas las preguntas.";
+        resultsButton.type = "button";
+        resultsButton.textContent = "Ver resultados";
 
-        triviaContent.appendChild(completedMessage);
+        resultsButton.addEventListener("click", function () {
+            renderResults();
+        });
+
+        triviaContent.appendChild(resultsButton);
     }
 }
 
