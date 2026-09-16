@@ -32,6 +32,7 @@ let questions = [
 ];
 
 let currentScreen = "start";
+let currentQuestionIndex = 0;
 
 const startScreen = document.getElementById("start-screen");
 const triviaScreen = document.getElementById("trivia-screen");
@@ -41,6 +42,32 @@ const startQuizButton = document.getElementById("start-quiz-button");
 const editQuestionsButton = document.getElementById("edit-questions-button");
 const triviaHomeButton = document.getElementById("trivia-home-button");
 const editHomeButton = document.getElementById("edit-home-button");
+
+function renderQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+
+    const questionTitle = document.createElement("h3");
+    questionTitle.textContent = currentQuestion.question;
+
+    const optionsContainer = document.createElement("div");
+
+    currentQuestion.options.forEach(function (option, index) {
+        const optionButton = document.createElement("button");
+
+        optionButton.type = "button";
+        optionButton.textContent = option;
+        optionButton.dataset.optionIndex = index;
+
+        optionsContainer.appendChild(optionButton);
+    });
+
+    const triviaContent = document.getElementById("trivia-content");
+
+    triviaContent.replaceChildren(
+        questionTitle,
+        optionsContainer
+    );
+}
 
 function showScreen(screen) {
     startScreen.classList.add("hidden");
@@ -59,7 +86,10 @@ function showScreen(screen) {
 }
 
 startQuizButton.addEventListener("click", function () {
+    currentQuestionIndex = 0;
+
     showScreen(triviaScreen);
+    renderQuestion();
 });
 
 editQuestionsButton.addEventListener("click", function () {
