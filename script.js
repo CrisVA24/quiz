@@ -58,6 +58,12 @@ function renderQuestion() {
         optionButton.textContent = option;
         optionButton.dataset.optionIndex = index;
 
+        optionButton.addEventListener("click", function () {
+            const selectedOptionIndex = Number(optionButton.dataset.optionIndex);
+
+            handleAnswer(selectedOptionIndex, optionsContainer);
+        });
+
         optionsContainer.appendChild(optionButton);
     });
 
@@ -67,6 +73,50 @@ function renderQuestion() {
         questionTitle,
         optionsContainer
     );
+}
+
+function handleAnswer(selectedOptionIndex, optionsContainer) {
+    const currentQuestion = questions[currentQuestionIndex];
+
+    const optionButtons = optionsContainer.querySelectorAll("button");
+
+    optionButtons.forEach(function (button) {
+        button.disabled = true;
+    });
+
+    const feedback = document.createElement("p");
+
+    if (selectedOptionIndex === currentQuestion.correctAnswer) {
+        feedback.textContent = "¡Correcto!";
+    } else {
+        const correctOption = currentQuestion.options[currentQuestion.correctAnswer];
+
+        feedback.textContent = `Incorrecto. La respuesta correcta es: ${correctOption}`;
+    }
+
+    const triviaContent = document.getElementById("trivia-content");
+
+    triviaContent.appendChild(feedback);
+
+    if (currentQuestionIndex < questions.length - 1) {
+        const nextButton = document.createElement("button");
+
+        nextButton.type = "button";
+        nextButton.textContent = "Siguiente pregunta";
+
+        nextButton.addEventListener("click", function () {
+            currentQuestionIndex++;
+            renderQuestion();
+        });
+
+        triviaContent.appendChild(nextButton);
+    } else {
+        const completedMessage = document.createElement("p");
+
+        completedMessage.textContent = "Has completado todas las preguntas.";
+
+        triviaContent.appendChild(completedMessage);
+    }
 }
 
 function showScreen(screen) {
