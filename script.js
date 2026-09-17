@@ -47,6 +47,8 @@ const editHomeButton = document.getElementById("edit-home-button");
 
 const saveQuestionsButton = document.getElementById("save-questions-button");
 
+const addQuestionButton = document.getElementById("add-question-button");
+
 function renderQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -175,17 +177,25 @@ function renderEditor() {
     });
 }
 
-function saveQuestions() {
-    const questionContainers = document.querySelectorAll("#edit-content fieldset");
+function getQuestionsFromEditor() {
+    const questionContainers =
+        document.querySelectorAll("#edit-content fieldset");
 
     const updatedQuestions = [];
 
     questionContainers.forEach(function (questionContainer, questionIndex) {
-        const questionInput = questionContainer.querySelector(`#question-${questionIndex}`);
+        const questionInput =
+            questionContainer.querySelector(`#question-${questionIndex}`);
 
-        const optionInputs = questionContainer.querySelectorAll('input[type="text"][data-option-index]');
+        const optionInputs =
+            questionContainer.querySelectorAll(
+                'input[type="text"][data-option-index]'
+            );
 
-        const correctRadio = questionContainer.querySelector(`input[name="correct-answer-${questionIndex}"]:checked`);
+        const correctRadio =
+            questionContainer.querySelector(
+                `input[name="correct-answer-${questionIndex}"]:checked`
+            );
 
         const updatedOptions = [];
 
@@ -200,9 +210,25 @@ function saveQuestions() {
         });
     });
 
-    questions = updatedQuestions;
+    return updatedQuestions;
+}
+
+function saveQuestions() {
+    questions = getQuestionsFromEditor();
 
     showScreen(startScreen);
+}
+
+function addQuestion() {
+    questions = getQuestionsFromEditor();
+
+    questions.push({
+        question: "",
+        options: ["", "", "", ""],
+        correctAnswer: 0
+    });
+
+    renderEditor();
 }
 
 function handleAnswer(selectedOptionIndex, optionsContainer) {
@@ -306,4 +332,8 @@ editHomeButton.addEventListener("click", function () {
 
 saveQuestionsButton.addEventListener("click", function () {
     saveQuestions();
+});
+
+addQuestionButton.addEventListener("click", function () {
+    addQuestion();
 });
