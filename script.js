@@ -45,6 +45,8 @@ const editQuestionsButton = document.getElementById("edit-questions-button");
 const triviaHomeButton = document.getElementById("trivia-home-button");
 const editHomeButton = document.getElementById("edit-home-button");
 
+const saveQuestionsButton = document.getElementById("save-questions-button");
+
 function renderQuestion() {
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -146,8 +148,7 @@ function renderEditor() {
 
             const optionInput = document.createElement("input");
             optionInput.type = "text";
-            optionInput.id =
-                `question-${questionIndex}-option-${optionIndex}`;
+            optionInput.id = `question-${questionIndex}-option-${optionIndex}`;
             optionInput.value = option;
             optionInput.dataset.questionIndex = questionIndex;
             optionInput.dataset.optionIndex = optionIndex;
@@ -158,8 +159,7 @@ function renderEditor() {
             correctRadio.type = "radio";
             correctRadio.name = `correct-answer-${questionIndex}`;
             correctRadio.value = optionIndex;
-            correctRadio.checked =
-                optionIndex === question.correctAnswer;
+            correctRadio.checked = optionIndex === question.correctAnswer;
 
             correctLabel.appendChild(correctRadio);
             correctLabel.append(" Respuesta correcta");
@@ -173,6 +173,36 @@ function renderEditor() {
 
         editContent.appendChild(questionContainer);
     });
+}
+
+function saveQuestions() {
+    const questionContainers = document.querySelectorAll("#edit-content fieldset");
+
+    const updatedQuestions = [];
+
+    questionContainers.forEach(function (questionContainer, questionIndex) {
+        const questionInput = questionContainer.querySelector(`#question-${questionIndex}`);
+
+        const optionInputs = questionContainer.querySelectorAll('input[type="text"][data-option-index]');
+
+        const correctRadio = questionContainer.querySelector(`input[name="correct-answer-${questionIndex}"]:checked`);
+
+        const updatedOptions = [];
+
+        optionInputs.forEach(function (optionInput) {
+            updatedOptions.push(optionInput.value);
+        });
+
+        updatedQuestions.push({
+            question: questionInput.value,
+            options: updatedOptions,
+            correctAnswer: Number(correctRadio.value)
+        });
+    });
+
+    questions = updatedQuestions;
+
+    showScreen(startScreen);
 }
 
 function handleAnswer(selectedOptionIndex, optionsContainer) {
@@ -201,11 +231,9 @@ function handleAnswer(selectedOptionIndex, optionsContainer) {
     if (isCorrect) {
         feedback.textContent = "¡Correcto!";
     } else {
-        const correctOption =
-            currentQuestion.options[currentQuestion.correctAnswer];
+        const correctOption = currentQuestion.options[currentQuestion.correctAnswer];
 
-        feedback.textContent =
-            `Incorrecto. La respuesta correcta es: ${correctOption}`;
+        feedback.textContent = `Incorrecto. La respuesta correcta es: ${correctOption}`;
     }
 
     const triviaContent = document.getElementById("trivia-content");
@@ -274,4 +302,8 @@ triviaHomeButton.addEventListener("click", function () {
 
 editHomeButton.addEventListener("click", function () {
     showScreen(startScreen);
+});
+
+saveQuestionsButton.addEventListener("click", function () {
+    saveQuestions();
 });
