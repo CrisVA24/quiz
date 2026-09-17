@@ -57,4 +57,4 @@ Al recargar la página, la aplicación vuelve a las cinco preguntas originales.
 
 ## Sitio publicado
 
-GitHub Pages: 
+GitHub Pages: https://crisva24.github.io/quiz/
